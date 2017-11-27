@@ -26,7 +26,7 @@ typedef struct {
 
 @interface ViewController ()
 @property (retain, nonatomic) IBOutlet UISwitch *reinstallSwitch;
-
+@property (retain, nonatomic) IBOutlet UISwitch *cleanOpenSSHSwitch;
 @end
 
 @implementation ViewController
@@ -372,8 +372,8 @@ gotclock:;
     extern uint64_t slide;
     slide = kernel_base - 0xFFFFFFF007004000;
     
-    void exploit(void*, mach_port_t, uint64_t, uint64_t,BOOL);
-    exploit(sender, pt, kernel_base, allproc_offset,self.reinstallSwitch.on);
+    void exploit(void*, mach_port_t, uint64_t, uint64_t,BOOL,BOOL);
+    exploit(sender, pt, kernel_base, allproc_offset,self.reinstallSwitch.on,self.cleanOpenSSHSwitch.on);
     [dope setEnabled:NO];
     [dope setTitle:@"already jailbroken" forState:UIControlStateDisabled];
 

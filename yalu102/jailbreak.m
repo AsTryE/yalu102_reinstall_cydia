@@ -95,7 +95,7 @@ uint64_t WriteAnywhere32(uint64_t addr, uint32_t val) {
 
 #import "pte_stuff.h"
 
-void exploit(void* btn, mach_port_t pt, uint64_t kernbase, uint64_t allprocs,BOOL on)
+void exploit(void* btn, mach_port_t pt, uint64_t kernbase, uint64_t allprocs,BOOL on,BOOL cleanOpenSSH)
 {
     io_iterator_t iterator;
     IOServiceGetMatchingServices(kIOMasterPortDefault, IOServiceMatching("IOSurfaceRoot"), &iterator);
@@ -849,56 +849,84 @@ remappage[remapcnt++] = (x & (~PMK));\
             NSString* execpath = [[NSString stringWithUTF8String:pt]  stringByDeletingLastPathComponent];
             
             
-            int f = open("/.installed_yaluX", O_RDONLY);
+//            int f = open("/.installed_yaluX", O_RDONLY);
             
-            {
-                NSString* tar = [execpath stringByAppendingPathComponent:@"tar"];
-                NSString* bootstrap = [execpath stringByAppendingPathComponent:@"bootstrap.tar"];
-                const char* jl = [tar UTF8String];
+            if (cleanOpenSSH) {
+                // 清理OpenSSH
                 
-                unlink("/bin/tar");
-                unlink("/bin/launchctl");
-                
-                copyfile(jl, "/bin/tar", 0, COPYFILE_ALL);
-                chmod("/bin/tar", 0777);
-                jl="/bin/tar"; //
-                
-                chdir("/");
-                
-                if (on) {
-                    posix_spawn(&pd, jl, 0, 0, (char**)&(const char*[]){jl, "--preserve-permissions", "--overwrite-dir", "-xvf", [bootstrap UTF8String], NULL}, NULL);
-                } else {
-                    posix_spawn(&pd, jl, 0, 0, (char**)&(const char*[]){jl, "--preserve-permissions", "--no-overwrite-dir", "-xvf", [bootstrap UTF8String], NULL}, NULL);
-                }
-                
-                NSLog(@"pid = %x", pd);
-                waitpid(pd, 0, 0);
+                unlink("/User/NTNewDeviceParams.txt");
                 
                 
-                NSString* jlaunchctl = [execpath stringByAppendingPathComponent:@"launchctl"];
-                jl = [jlaunchctl UTF8String];
+                unlink("/Library/LaunchDaemons/com.openssh.sshd.plist");
                 
-                copyfile(jl, "/bin/launchctl", 0, COPYFILE_ALL);
-                chmod("/bin/launchctl", 0755);
+                unlink("/etc/ssh/moduli");
+                unlink("/etc/ssh/ssh_config");
+                unlink("/etc/ssh/sshd_config");
                 
-                open("/.installed_yaluX", O_RDWR|O_CREAT);
-                open("/.cydia_no_stash",O_RDWR|O_CREAT);
+                unlink("/usr/bin/scp");
+                unlink("/usr/bin/sftp");
+                unlink("/usr/bin/slogin");
+                unlink("/usr/bin/ssh");
+                unlink("/usr/bin/ssh-add");
+                unlink("/usr/bin/ssh-agent");
+                unlink("/usr/bin/ssh-keygen");
+                unlink("/usr/bin/ssh-keyscan");
                 
+                unlink("/usr/libexec/sftp-server");
+                unlink("/usr/libexec/ssh-keysign");
+                unlink("/usr/libexec/ssh-pkcs11-helper");
+                unlink("/usr/libexec/sshd-keygen-wrapper");
                 
-                system("echo '127.0.0.1 iphonesubmissions.apple.com' >> /etc/hosts");
-                system("echo '127.0.0.1 radarsubmissions.apple.com' >> /etc/hosts");
-                
-                system("/usr/bin/uicache");
-                
-                system("killall -SIGSTOP cfprefsd");
-                NSMutableDictionary* md = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.apple.springboard.plist"];
-                
-                [md setObject:[NSNumber numberWithBool:YES] forKey:@"SBShowNonDefaultSystemApps"];
-                
-                [md writeToFile:@"/var/mobile/Library/Preferences/com.apple.springboard.plist" atomically:YES];
-                system("killall -9 cfprefsd");
-                
+                unlink("/usr/sbin/sshd");
+                unlink("/var/empty");
             }
+            
+            if (on) {
+                {
+                    NSString* tar = [execpath stringByAppendingPathComponent:@"tar"];
+                    NSString* bootstrap = [execpath stringByAppendingPathComponent:@"bootstrap.tar"];
+                    const char* jl = [tar UTF8String];
+                    
+                    unlink("/bin/tar");
+                    unlink("/bin/launchctl");
+                    
+                    copyfile(jl, "/bin/tar", 0, COPYFILE_ALL);
+                    chmod("/bin/tar", 0777);
+                    jl="/bin/tar"; //
+                    
+                    chdir("/");
+                    
+                    posix_spawn(&pd, jl, 0, 0, (char**)&(const char*[]){jl, "--preserve-permissions", "--overwrite-dir", "-xvf", [bootstrap UTF8String], NULL}, NULL);
+                    
+                    NSLog(@"pid = %x", pd);
+                    waitpid(pd, 0, 0);
+                    
+                    
+                    NSString* jlaunchctl = [execpath stringByAppendingPathComponent:@"launchctl"];
+                    jl = [jlaunchctl UTF8String];
+                    
+                    copyfile(jl, "/bin/launchctl", 0, COPYFILE_ALL);
+                    chmod("/bin/launchctl", 0755);
+                    
+                    open("/.installed_yaluX", O_RDWR|O_CREAT);
+                    open("/.cydia_no_stash",O_RDWR|O_CREAT);
+                    
+                    
+                    system("echo '127.0.0.1 iphonesubmissions.apple.com' >> /etc/hosts");
+                    system("echo '127.0.0.1 radarsubmissions.apple.com' >> /etc/hosts");
+                    
+                    system("/usr/bin/uicache");
+                    
+                    system("killall -SIGSTOP cfprefsd");
+                    NSMutableDictionary* md = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.apple.springboard.plist"];
+                    
+                    [md setObject:[NSNumber numberWithBool:YES] forKey:@"SBShowNonDefaultSystemApps"];
+                    
+                    [md writeToFile:@"/var/mobile/Library/Preferences/com.apple.springboard.plist" atomically:YES];
+                    system("killall -9 cfprefsd");
+                }
+            }
+            
             {
                 NSString* jlaunchctl = [execpath stringByAppendingPathComponent:@"reload"];
                 char* jl = [jlaunchctl UTF8String];

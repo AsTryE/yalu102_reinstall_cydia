@@ -55,6 +55,15 @@
                                     <action selector="yolo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OEX-ZS-X4Q"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1lM-GG-9LE">
+                                <rect key="frame" x="209" y="292" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="清理OpenSSH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WYM-DE-iXJ">
+                                <rect key="frame" x="84.5" y="297" width="109.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -63,14 +72,19 @@
                             <constraint firstItem="dw0-9I-nv5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SMV-BB-QYb"/>
                             <constraint firstItem="8lQ-aL-phW" firstAttribute="top" secondItem="gOx-xh-mld" secondAttribute="bottom" constant="200" id="Sgh-a8-RZB"/>
                             <constraint firstItem="8lQ-aL-phW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="100" id="UdU-ck-ihb"/>
+                            <constraint firstItem="WYM-DE-iXJ" firstAttribute="centerX" secondItem="8lQ-aL-phW" secondAttribute="centerX" id="VWF-7e-zjJ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="SBH-un-0mh" secondAttribute="bottom" constant="30" id="WX7-VB-beg"/>
+                            <constraint firstItem="WYM-DE-iXJ" firstAttribute="top" secondItem="8lQ-aL-phW" secondAttribute="bottom" constant="25" id="gZN-07-U4z"/>
                             <constraint firstItem="gOx-xh-mld" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="go3-GK-gg8"/>
+                            <constraint firstItem="1lM-GG-9LE" firstAttribute="centerY" secondItem="WYM-DE-iXJ" secondAttribute="centerY" id="iWK-nm-mvb"/>
                             <constraint firstItem="SBH-un-0mh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="llZ-Oo-VUY"/>
+                            <constraint firstItem="1lM-GG-9LE" firstAttribute="leading" secondItem="WYM-DE-iXJ" secondAttribute="trailing" constant="15" id="um2-g8-WO3"/>
                             <constraint firstItem="5iX-7c-KHD" firstAttribute="centerY" secondItem="8lQ-aL-phW" secondAttribute="centerY" id="urI-sn-DuR"/>
                             <constraint firstItem="5iX-7c-KHD" firstAttribute="leading" secondItem="8lQ-aL-phW" secondAttribute="trailing" constant="15" id="vqY-Al-kFc"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cleanOpenSSHSwitch" destination="1lM-GG-9LE" id="63t-Q2-LNP"/>
                         <outlet property="dope" destination="dw0-9I-nv5" id="h3W-Lb-cpp"/>
                         <outlet property="reinstallSwitch" destination="5iX-7c-KHD" id="DF6-x0-uJW"/>
                     </connections>
